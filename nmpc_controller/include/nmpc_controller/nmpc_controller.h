@@ -13,7 +13,7 @@
 
 #include <Eigen/Dense>
 
-#include "IpIpoptApplication.hpp"
+#include "coin/IpIpoptApplication.hpp"
 #include "nmpc_controller/quad_nlp.h"
 
 //! NMPC controller ROS node

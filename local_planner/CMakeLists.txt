@@ -28,10 +28,29 @@ find_package(Eigen3 REQUIRED)
 # find_package(OsqpEigen REQUIRED)
 find_package(PythonLibs 2.7)
 
-set(QPOASES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../external/qpOASES")
-set(QPOASES_INCLUDE_DIRS "${QPOASES_DIR}/include")
-set(QPOASES_LIBRARIES "${QPOASES_DIR}/build/libs")
-find_library(QPOASES NAMES qpOASES PATHS ${QPOASES_LIBRARIES} REQUIRED)
+# set(QPOASES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/../external/qpOASES")
+# message("qpoases" ${CMAKE_CURRENT_SOURCE_DIR})
+# set(QPOASES_INCLUDE_DIRS "${QPOASES_DIR}/include")
+# set(QPOASES_LIBRARIES "${QPOASES_DIR}/build/libs")
+# find_library(QPOASES NAMES qpOASES PATHS ${QPOASES_LIBRARIES} REQUIRED)
+
+set (SW_QP_SOLVER "qpOASES")
+# qpOASES
+#add_subdirectory ("${PROJECT_SOURCE_DIR}/${SW_QP_SOLVER}/")
+include_directories ("${PROJECT_SOURCE_DIR}/${SW_QP_SOLVER}/include/")
+
+# compile qpOASES libraries (instead of add_subdirectory) - this in order to be able to install the qpOASES.so in the isolated install.
+FILE(GLOB SW_QP_SOLVER_SRC ${SW_QP_SOLVER}/src/*.cpp)
+ADD_LIBRARY(${SW_QP_SOLVER} ${SW_QP_SOLVER_SRC})
+
+
+# set(QPOASES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/qpOASES")
+# message("qpoases" ${CMAKE_CURRENT_SOURCE_DIR})
+# set(QPOASES_INCLUDE_DIRS "${QPOASES_DIR}/include")
+# set(QPOASES_LIBRARIES "${QPOASES_DIR}/build/libs")
+# find_library(QPOASES NAMES qpOASES PATHS ${QPOASES_LIBRARIES} REQUIRED)
+
+
 
 catkin_package(
   INCLUDE_DIRS include
@@ -74,6 +93,7 @@ add_executable(local_planner_node src/local_planner_node.cpp)
 target_link_libraries(local_planner_node
   local_planner
   ${catkin_LIBRARIES}
+  ${SW_QP_SOLVER}
 )
 
 #############
@@ -82,10 +102,10 @@ target_link_libraries(local_planner_node
 
 ## Google test file for local_planner library
 catkin_add_gtest(local_footstep_planner_test test/test_local_footstep_planner.cpp)
-target_link_libraries(local_footstep_planner_test local_planner ${catkin_LIBRARIES})
+target_link_libraries(local_footstep_planner_test local_planner ${catkin_LIBRARIES} ${SW_QP_SOLVER})
 
 catkin_add_gtest(local_planner_test test/test_local_planner.cpp)
-target_link_libraries(local_planner_test local_planner ${catkin_LIBRARIES})
+target_link_libraries(local_planner_test local_planner ${catkin_LIBRARIES} ${SW_QP_SOLVER})
 
 
 

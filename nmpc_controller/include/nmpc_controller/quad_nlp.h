@@ -12,13 +12,13 @@
 
 #include <Eigen/Dense>
 #include <Eigen/Sparse>
-#include <IpIpoptData.hpp>
+#include <coin/IpIpoptData.hpp>
 #include <grid_map_core/grid_map_core.hpp>
 #include <numeric>
 #include <unordered_map>
 #include <vector>
 
-#include "IpTNLP.hpp"
+#include "coin/IpTNLP.hpp"
 #include "nmpc_controller/gen/eval_g_a1.h"
 #include "nmpc_controller/gen/eval_g_leg_complex.h"
 #include "nmpc_controller/gen/eval_g_leg_complex_to_simple.h"
